@@ -1,0 +1,16 @@
+name: Keep Alive
+
+on:
+  schedule:
+    # Se ejecuta cada 6 horas para mantener activa la base de datos de Supabase y el servidor
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping API and Database
+        run: |
+          STATUS_CODE=$(curl -s --max-time 120 -o /dev/null -w "%{http_code}" https://cubix-api-v78n.onrender.com/api/products?page=1&limit=1)
+          echo "Status code: $STATUS_CODE"
